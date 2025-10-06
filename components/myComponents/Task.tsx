@@ -1,5 +1,5 @@
 import Entypo from "@expo/vector-icons/Entypo";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Task from "../../models/task";
 import Circle from "./Circle";
 
@@ -12,37 +12,52 @@ type TaskProps = {
 export default function TaskItem({ task, onToggle }: TaskProps) {
 
     const onPress = () => {
-        task.isdone = !task.isdone;
-        console.log(task);
-    }
+        Alert.alert(
+            "",
+            undefined,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "Later",
+                    onPress: () => console.log("Later Pressed")
+                },
+                {
+                    text: "Go there",
+                    onPress: () => console.log("Go there Pressed")
+                }
+            ]
+        );
+    };
 
     return (
-        <View style={styles.card}>
-
-                {task.isdone ? (
-                    <View style={styles.cardContent}>
-                        <TouchableOpacity onPress={onToggle} activeOpacity={0.7}>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.card}>
+            {!task.isdone ? (
+                <View style={styles.cardContent}>
+                    <TouchableOpacity onPress={onToggle} activeOpacity={0.7}>
                         <Circle diameter={45} color="#427bf5ff">
                             <Circle diameter={32} color="white" />
                         </Circle>
-                        </TouchableOpacity>
-                        <Text style={styles.taskNotDone}>
-                            {task.name}
-                        </Text>
-                    </View>
-                ) : (
-                    <View style={styles.cardContent}>
-                        <TouchableOpacity onPress={onToggle} activeOpacity={0.7}>F
+                    </TouchableOpacity>
+                    <Text style={styles.taskNotDone}>
+                        {task.name}
+                    </Text>
+                </View>
+            ) : (
+                <View style={styles.cardContent}>
+                    <TouchableOpacity onPress={onToggle} activeOpacity={0.7}>
                         <Circle diameter={45} color="#f33f2bff">
                             <Entypo name="check" size={20} color="white" />
                         </Circle>
-                        </TouchableOpacity>
-                        <Text style={styles.taskDone}>
-                            {task.name}
-                        </Text>
-                    </View>
-                )}
-        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.taskDone}>
+                        {task.name}
+                    </Text>
+                </View>
+            )}
+        </TouchableOpacity>
     )
 }
 
@@ -50,7 +65,7 @@ const styles = StyleSheet.create({
     card: {
         height: 100,
         margin: 10,
-        width: '90%',
+        width: '97%',
         justifyContent: "center",
         backgroundColor: 'white',
         borderRadius: 15,

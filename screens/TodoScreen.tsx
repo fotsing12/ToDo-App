@@ -2,6 +2,7 @@ import TaskItem from '@/components/myComponents/Task';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Task from '../models/task';
 
 
@@ -26,6 +27,7 @@ export default function TodoScreen() {
             setTasks([...tasks, newTask]);
             setTask('');
         }
+        console.log(tasks);
     };
 
     //for state management we pass the function down to the component which modifies the state
@@ -39,7 +41,7 @@ export default function TodoScreen() {
 
 
     return (
-        <View>
+        <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.header}>
                 <Text style={styles.title}>ToDo APP</Text>
                 <Text style={styles.subtitle}>Planify your day</Text>
@@ -51,18 +53,18 @@ export default function TodoScreen() {
                     value={task}
                     onChangeText={setTask}
                 />
-                <TouchableOpacity style={styles.button} onPress={() => alert('Button pressed!')}>
+                <TouchableOpacity style={styles.button} onPress={() => addTask()}>
                     <Entypo name="plus" size={24} color="blacks" />
                 </TouchableOpacity>
             </View>
-            <View>
-                <FlatList
-                    data={tasks}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => <TaskItem task={item} onToggle={() => toggleTask(item.id)} />}
-                />
-            </View>
-        </View>
+            <FlatList
+                data={tasks}
+                style={styles.list}
+                contentContainerStyle={{ paddingBottom: 50 }}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <TaskItem task={item} onToggle={() => toggleTask(item.id)}/>}
+            />
+        </SafeAreaView>
 
     )
 }
@@ -72,7 +74,6 @@ const { width } = Dimensions.get("window"); // get screen width
 
 const styles = StyleSheet.create({
     bar: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 10,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 10,
         borderRadius: 8,
-         // for android
+        // for android
         elevation: 5,
         // for ios
         shadowColor: "#000",
@@ -130,12 +131,16 @@ const styles = StyleSheet.create({
         elevation: 3,            // shadow for Android
     },
     header: {
-        height: 100,
+        height: 150,
         width: width,
         backgroundColor: "pink",
         borderBottomLeftRadius: 20,   // only bottom left rounded
         borderBottomRightRadius: 20,  // only bottom right rounded
         overflow: "hidden",           // ensures child views don’t bleed outside the radius
         padding: 20,
+    },
+    list: {
+        flex: 1, // <-- this is crucial
+        paddingHorizontal: 10
     },
 });

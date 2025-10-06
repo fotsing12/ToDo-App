@@ -1,4 +1,4 @@
-import TodoScreen from '../screens/TodoScreen';
+import TodoScreen from './screens/TodoScreen';
 
 export default function Index() {
   return <TodoScreen />;
